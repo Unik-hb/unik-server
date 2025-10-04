@@ -13,3 +13,127 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ADMIN
+  BROKER
+  ADVERTISER
+}
+
+enum Category {
+  SALE
+  RENT
+}
+
+enum ListingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVISION
+}
+
+enum CommissionType {
+  REAL_ESTATE
+  BROKER_SALE
+  BROKER_CAPTURE
+  CONTRACT_FEE
+}
+
+model User {
+  id             String       @id @default(uuid())
+  name           String
+  email          String       @unique
+  password       String
+  role           Role         @default(ADVERTISER)
+  photo          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  properties     Property[]
+  commisions     Commission[]
+  saleSoldBy     Sale[]       @relation("soldBy")
+  saleCapturedBy Sale[]       @relation("capturedBy")
+  Rental         Rental[]     @relation("rentalBroker")
+
+  @@map("users")
+}
+
+model Property {
+  id              String        @id @default(uuid())
+  title           String
+  description     String?
+  category        Category
+  price           Float
+  condoFee        Float
+  monthlyTax      Float
+  photos          Json?
+  builtArea       Float
+  bedrooms        Int
+  suites          Int
+  parkingSpots    Int
+  updatedRegistry Boolean       @default(false)
+  address         String
+  street          String
+  number          String
+  neighborhood    String
+  city            String
+  zipCode         String
+  status          ListingStatus @default(PENDING)
+  User            User?         @relation(fields: [usersId], references: [id])
+  usersId         String?
+  sales           Sale[]
+  rentals         Rental[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("properties")
+}
+
+model Sale {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  totalValue Float
+
+  soldBy   User?   @relation(name: "soldBy", fields: [soldById], references: [id])
+  soldById String?
+
+  capturedBy   User?   @relation(name: "capturedBy", fields: [capturedById], references: [id])
+  capturedById String?
+
+  commisions Commission[]
+
+  @@map("sales")
+}
+
+model Rental {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  monthlyValue Float
+  brokerId     String?
+  broker       User?   @relation(name: "rentalBroker", fields: [brokerId], references: [id])
+
+  commisions Commission[]
+
+  @@map("rentals")
+}
+
+model Commission {
+  id     String         @id @default(uuid())
+  amount Float
+  type   CommissionType
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Sale   Sale?   @relation(fields: [saleId], references: [id])
+  saleId String?
+
+  Rental   Rental? @relation(fields: [rentalId], references: [id])
+  rentalId String?
+
+  @@map("commisions")
+}
