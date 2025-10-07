@@ -10,12 +10,20 @@ CREATE TYPE "ListingStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'REVISIO
 -- CreateEnum
 CREATE TYPE "CommissionType" AS ENUM ('REAL_ESTATE', 'BROKER_SALE', 'BROKER_CAPTURE', 'CONTRACT_FEE');
 
+-- CreateEnum
+CREATE TYPE "PersonType" AS ENUM ('INDIVIDUAL', 'COMPANY');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "company" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "phone" TEXT,
+    "cpf" TEXT,
+    "cnpj" TEXT,
+    "personType" "PersonType" NOT NULL DEFAULT 'INDIVIDUAL',
     "role" "Role" NOT NULL DEFAULT 'ADVERTISER',
     "photo" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
