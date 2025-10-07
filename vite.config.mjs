@@ -19,7 +19,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'unit',
-          include: ['src/functions/**/*.spec.ts'],
+          include: ['src/functions/**/*.test.ts'],
           environment: 'node',
         },
       },
@@ -28,7 +28,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'e2e',
-          include: ['src/functions/**/*.e2e.ts'],
+          include: ['src/routes/**/*.e2e.test.ts'],
           environment:
             './prisma/vitest-environment-prisma/prisma-test-environment.ts',
         },

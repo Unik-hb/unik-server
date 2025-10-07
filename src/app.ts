@@ -13,6 +13,8 @@ import {
 } from 'fastify-type-provider-zod'
 
 import scalarAPIReference from '@scalar/fastify-api-reference'
+import { routes } from './routes'
+import fastifyMultipart from '@fastify/multipart'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -24,6 +26,14 @@ app.register(fastifyCors, {
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
+
+app.register(fastifyMultipart, {
+  attachFieldsToBody: true,
+  limits: {
+    fileSize: 1 * 1024 * 1024, // 1MB
+    files: 6,
+  },
+})
 
 if (env.NODE_ENV === 'development') {
   app.register(fastifySwagger, {
@@ -45,3 +55,5 @@ if (env.NODE_ENV === 'development') {
     },
   })
 }
+
+app.register(routes)
