@@ -23,7 +23,7 @@ export async function createUserAdvertiserIndividual({
 
   const passwordHash = await hash(password, 6)
 
-  const user = await prisma.user.create({
+  await prisma.user.create({
     data: {
       name,
       email,
@@ -37,7 +37,6 @@ export async function createUserAdvertiserIndividual({
   })
 
   return {
-    id: user.id,
     message: 'Usuário criado com sucesso.',
   }
 }

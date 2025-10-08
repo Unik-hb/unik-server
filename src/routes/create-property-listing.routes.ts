@@ -42,11 +42,12 @@ export const createPropertyListingRoutes: FastifyPluginCallbackZod = (app) => {
           suites,
           parkingSpots,
           address,
-          street,
-          number,
+          uf,
+          bathroon,
           neighborhood,
           city,
           zipCode,
+          elevator,
         } = request.body
 
         const { usersId } = request.params
@@ -64,12 +65,13 @@ export const createPropertyListingRoutes: FastifyPluginCallbackZod = (app) => {
           suites,
           parkingSpots,
           address,
-          street,
-          number,
+          uf,
+          bathroon,
           neighborhood,
           city,
           zipCode,
           usersId,
+          elevator,
         })
 
         return reply.status(201).send({ message })

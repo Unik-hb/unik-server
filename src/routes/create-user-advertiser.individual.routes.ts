@@ -17,7 +17,6 @@ export const createUserAdvertiserIndividualRoutes: FastifyPluginCallbackZod = (
         body: userSchemaRequest,
         response: {
           201: z.object({
-            id: z.uuid(),
             message: z.string().describe('Usuário criado com sucesso.'),
           }),
           409: z.object({
@@ -30,7 +29,7 @@ export const createUserAdvertiserIndividualRoutes: FastifyPluginCallbackZod = (
       try {
         const { name, email, phone, cpf, password, photo } = request.body
 
-        const { id, message } = await createUserAdvertiserIndividual({
+        const { message } = await createUserAdvertiserIndividual({
           name,
           email,
           phone,
@@ -39,7 +38,7 @@ export const createUserAdvertiserIndividualRoutes: FastifyPluginCallbackZod = (
           photo,
         })
 
-        return reply.status(201).send({ id, message })
+        return reply.status(201).send({ message })
       } catch (error) {
         if (error instanceof UserAlreadyExistError) {
           return reply.status(409).send({ message: error.message })
