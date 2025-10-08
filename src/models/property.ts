@@ -81,7 +81,38 @@ export const propertySchemaRequest = z.object({
   ),
 
   elevator: z.preprocess(
-    (file) => file ? (file as MultipartValue).value : undefined,
-    z.coerce.boolean().optional().default(false)
+    (file) => (file ? (file as MultipartValue).value : undefined),
+    z.coerce.boolean().optional()
   ),
+})
+
+export const propertiesSchemaResponse = z.object({
+  properties: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable(),
+      category: z.enum(['SALE', 'RENT']),
+      price: z.number(),
+      condoFee: z.number(),
+      monthlyTax: z.number(),
+      photos: z.preprocess(
+        (value) => (typeof value === 'string' ? JSON.parse(value) : value),
+        z.array(z.string()).nullable()
+      ),
+      builtArea: z.number(),
+      bedrooms: z.number(),
+      suites: z.number(),
+      bathroon: z.number().nullable(),
+      parkingSpots: z.number(),
+      updatedRegistry: z.boolean(),
+      address: z.string(),
+      uf: z.string().nullable(),
+      neighborhood: z.string(),
+      city: z.string(),
+      zipCode: z.string(),
+      status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
+      usersId: z.string().nullable(),
+    })
+    .array(),
 })
