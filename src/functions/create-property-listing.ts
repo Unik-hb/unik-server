@@ -14,12 +14,13 @@ export async function createPropertyListing({
   suites,
   parkingSpots,
   address,
-  street,
-  number,
+  uf,
   neighborhood,
   city,
   zipCode,
   usersId,
+  elevator,
+  bathroon,
 }: Prisma.PropertyCreateManyInput) {
   await prisma.property.create({
     data: {
@@ -35,13 +36,13 @@ export async function createPropertyListing({
       suites,
       parkingSpots,
       address,
-      street,
-      number,
+      uf,
       neighborhood,
       city,
       zipCode,
       usersId,
-      status: 'PENDING',
+      elevator,
+      bathroon,
     },
   })
 

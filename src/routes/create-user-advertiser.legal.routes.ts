@@ -16,7 +16,6 @@ export const createUserAdvertiserLegalRoutes: FastifyPluginCallbackZod = (
         body: userSchemaRequest,
         response: {
           201: z.object({
-            id: z.uuid(),
             message: z.string().describe('Usuário criado com sucesso.'),
           }),
           409: z.object({
@@ -30,7 +29,7 @@ export const createUserAdvertiserLegalRoutes: FastifyPluginCallbackZod = (
         const { name, company, email, phone, cnpj, password, photo } =
           request.body
 
-        const { id, message } = await createUserAdvertiserLegal({
+        const { message } = await createUserAdvertiserLegal({
           name,
           company,
           email,
@@ -40,7 +39,7 @@ export const createUserAdvertiserLegalRoutes: FastifyPluginCallbackZod = (
           photo,
         })
 
-        return reply.status(201).send({ id, message })
+        return reply.status(201).send({ message })
       } catch (error) {
         if (error instanceof UserAlreadyExistError) {
           return reply.status(409).send({ message: error.message })

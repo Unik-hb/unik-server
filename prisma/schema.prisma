@@ -80,6 +80,7 @@ model Property {
   neighborhood    String
   city            String
   zipCode         String
+  elevator        Boolean       @default(false)
   status          ListingStatus @default(PENDING)
   User            User?         @relation(fields: [usersId], references: [id])
   usersId         String?

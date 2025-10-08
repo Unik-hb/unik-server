@@ -18,9 +18,12 @@ export const propertySchemaRequest = z.object({
 
   city: z.preprocess((file) => (file as MultipartValue).value, z.string()),
 
-  street: z.preprocess((file) => (file as MultipartValue).value, z.string()),
+  uf: z.preprocess((file) => (file as MultipartValue).value, z.string()),
 
-  number: z.preprocess((file) => (file as MultipartValue).value, z.string()),
+  bathroon: z.preprocess(
+    (file) => (file as MultipartValue).value,
+    z.coerce.number()
+  ),
 
   neighborhood: z.preprocess(
     (file) => (file as MultipartValue).value,
@@ -75,5 +78,10 @@ export const propertySchemaRequest = z.object({
   parkingSpots: z.preprocess(
     (file) => (file as MultipartValue).value,
     z.coerce.number()
+  ),
+
+  elevator: z.preprocess(
+    (file) => file ? (file as MultipartValue).value : undefined,
+    z.coerce.boolean().optional().default(false)
   ),
 })
