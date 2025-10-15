@@ -92,7 +92,7 @@ export const propertiesSchemaResponse = z.object({
       id: z.string(),
       title: z.string(),
       description: z.string().nullable(),
-      category: z.enum(['SALE', 'RENT']),
+      category: z.enum(['SALE', 'RENT', '']),
       price: z.number(),
       condoFee: z.number(),
       monthlyTax: z.number(),
@@ -113,6 +113,62 @@ export const propertiesSchemaResponse = z.object({
       zipCode: z.string(),
       status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
       usersId: z.string().nullable(),
+      elevator: z.boolean().nullable(),
     })
     .array(),
+})
+
+export const propertiesSchemaQuery = z.object({
+  pageIndex: z.coerce.number().min(0).default(0),
+  title: z.string().optional(),
+  address: z.string().optional(),
+  category: z.enum(['SALE', 'RENT', '']).optional(),
+  priceMin: z.coerce.number().optional(),
+  priceMax: z.coerce.number().optional(),
+  builtAreaMin: z.coerce.number().optional(),
+  builtAreaMax: z.coerce.number().optional(),
+  bedrooms: z.coerce.number().optional(),
+  suites: z.coerce.number().optional(),
+  bathroon: z.coerce.number().optional(),
+  elevator: z
+    .string()
+    .transform((value) => (value === 'true' ? true : false))
+    .optional(),
+})
+
+export const getAllPropertiesResponse = z.object({
+  properties: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable(),
+      category: z.enum(['SALE', 'RENT', '']),
+      price: z.number(),
+      condoFee: z.number(),
+      monthlyTax: z.number(),
+      photos: z.preprocess(
+        (value) => (typeof value === 'string' ? JSON.parse(value) : value),
+        z.array(z.string()).nullable()
+      ),
+      builtArea: z.number(),
+      bedrooms: z.number(),
+      suites: z.number(),
+      bathroon: z.number().nullable(),
+      parkingSpots: z.number(),
+      updatedRegistry: z.boolean(),
+      address: z.string(),
+      uf: z.string().nullable(),
+      neighborhood: z.string(),
+      city: z.string(),
+      zipCode: z.string(),
+      status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
+      usersId: z.string().nullable(),
+      elevator: z.boolean().nullable(),
+    })
+    .array(),
+
+  metas: z.object({
+    totalCount: z.number(),
+    totalPages: z.number(),
+  }),
 })
