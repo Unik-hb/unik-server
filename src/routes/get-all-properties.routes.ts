@@ -1,12 +1,12 @@
-import { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
+import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z, { ZodError } from 'zod'
+import { getAllProperties } from '../functions/get-all-properties.ts'
 import {
   getAllPropertiesResponse,
   propertiesSchemaQuery,
-} from '../models/property'
-import { getAllProperties } from '../functions/get-all-properties'
+} from '../models/property.ts'
 
-export const getAllPropertiesRoutes: FastifyPluginCallbackZod = (app) => {
+export const getAllPropertiesRoutes: FastifyPluginCallbackZod = app => {
   app.get(
     '/',
     {
@@ -27,7 +27,7 @@ export const getAllPropertiesRoutes: FastifyPluginCallbackZod = (app) => {
         const {
           pageIndex,
           title,
-          address,
+          neighborhood,
           category,
           priceMin,
           priceMax,
@@ -35,14 +35,13 @@ export const getAllPropertiesRoutes: FastifyPluginCallbackZod = (app) => {
           builtAreaMin,
           builtAreaMax,
           bedrooms,
-          suites,
           elevator,
         } = request.query
 
         const { properties, metas } = await getAllProperties({
           pageIndex,
           title,
-          address,
+          neighborhood,
           category: category as 'RENT' | 'SALE' | undefined,
           priceMin,
           priceMax,
@@ -50,7 +49,6 @@ export const getAllPropertiesRoutes: FastifyPluginCallbackZod = (app) => {
           builtAreaMin,
           builtAreaMax,
           bedrooms,
-          suites,
           elevator,
         })
 

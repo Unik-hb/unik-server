@@ -1,4 +1,4 @@
-import { prisma } from '../database/prisma'
+import { prisma } from '../database/prisma.ts'
 
 export async function searchFeaturedProperties() {
   const properties = await prisma.property.findMany({

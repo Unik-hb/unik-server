@@ -1,11 +1,11 @@
-import { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
-import { propertySchemaRequest } from '../models/property'
-import { userIdSchemaRequest } from '../models/user'
-import { createPropertyListing } from '../functions/create-property-listing'
-import { InputJsonValue } from '@prisma/client/runtime/client'
+import type { InputJsonValue } from '@prisma/client/runtime/client'
+import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z, { ZodError } from 'zod'
+import { createPropertyListing } from '../functions/create-property-listing.ts'
+import { propertySchemaRequest } from '../models/property.ts'
+import { userIdSchemaRequest } from '../models/user.ts'
 
-export const createPropertyListingRoutes: FastifyPluginCallbackZod = (app) => {
+export const createPropertyListingRoutes: FastifyPluginCallbackZod = app => {
   app.post(
     '/create-property/:usersId',
     {
@@ -48,6 +48,11 @@ export const createPropertyListingRoutes: FastifyPluginCallbackZod = (app) => {
           city,
           zipCode,
           elevator,
+          airConditioning,
+          closet,
+          pool,
+          sevantsRoom,
+          terrace,
         } = request.body
 
         const { usersId } = request.params
@@ -72,6 +77,11 @@ export const createPropertyListingRoutes: FastifyPluginCallbackZod = (app) => {
           zipCode,
           usersId,
           elevator,
+          airConditioning,
+          closet,
+          pool,
+          sevantsRoom,
+          terrace,
         })
 
         return reply.status(201).send({ message })

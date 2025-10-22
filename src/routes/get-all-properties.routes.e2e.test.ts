@@ -1,6 +1,6 @@
-import { expect, test, describe } from 'vitest'
 import request from 'supertest'
-import { app } from '../app'
+import { describe, expect, test } from 'vitest'
+import { app } from '../app.ts'
 
 describe('(E2E) Get All Properties', () => {
   test('should get all properties', async () => {

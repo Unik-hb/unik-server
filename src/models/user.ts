@@ -24,3 +24,38 @@ export const userSchemaRequest = z.object({
 export const userIdSchemaRequest = z.object({
   usersId: z.string(),
 })
+
+export const userBrokerSchemaResponse = z.object({
+  brokers: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string().nullable(),
+      email: z.string(),
+      photo: z.string().nullable(),
+      phone: z.string().nullable(),
+      properties: z
+        .object({
+          id: z.string(),
+          photos: z.preprocess(
+            value => (typeof value === 'string' ? JSON.parse(value) : value),
+            z.array(z.string()).nullable()
+          ),
+          category: z.string(),
+          title: z.string(),
+          city: z.string(),
+          neighborhood: z.string(),
+          builtArea: z.number(),
+          bedrooms: z.number(),
+          bathroon: z.number().nullable(),
+          price: z.number(),
+          User: z
+            .object({
+              photo: z.string().nullable(),
+            })
+            .nullable(),
+        })
+        .array(),
+    })
+    .array(),
+})

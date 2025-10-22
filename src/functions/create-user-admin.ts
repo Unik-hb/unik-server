@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client'
-import { prisma } from '../database/prisma'
-import { UserAlreadyExistError } from './errors/user-already-exist'
+import type { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
+import { prisma } from '../database/prisma.ts'
+import { UserAlreadyExistError } from './errors/user-already-exist.ts'
 
 export async function createUserAdmin({
   name,

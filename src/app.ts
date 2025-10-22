@@ -1,20 +1,16 @@
-import fastify from 'fastify'
-
 import { fastifyCors } from '@fastify/cors'
+import fastifyMultipart from '@fastify/multipart'
 import fastifySwagger from '@fastify/swagger'
-
-import { env } from './env/env'
-
+import scalarAPIReference from '@scalar/fastify-api-reference'
+import fastify from 'fastify'
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
-  ZodTypeProvider,
+  type ZodTypeProvider,
 } from 'fastify-type-provider-zod'
-
-import scalarAPIReference from '@scalar/fastify-api-reference'
-import { routes } from './routes'
-import fastifyMultipart from '@fastify/multipart'
+import { env } from './env/env.ts'
+import { routes } from './routes/index.ts'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -31,7 +27,7 @@ app.register(fastifyMultipart, {
   attachFieldsToBody: true,
   limits: {
     fileSize: 1 * 1024 * 1024, // 1MB
-    files: 6,
+    files: 15,
   },
 })
 

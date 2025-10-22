@@ -1,4 +1,4 @@
-import { prisma } from '../../src/database/prisma'
+import { prisma } from '../../src/database/prisma.ts'
 
 export async function makeUsers() {
   const user = await prisma.user.create({
@@ -16,5 +16,6 @@ export async function makeUsers() {
 
   return {
     usersId: user.id,
+    email: user.email,
   }
 }

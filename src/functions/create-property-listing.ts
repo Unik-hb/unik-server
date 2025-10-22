@@ -1,49 +1,18 @@
-import { Prisma } from '@prisma/client'
-import { prisma } from '../database/prisma'
+import fs from 'node:fs'
+import path from 'node:path'
+import { pipeline } from 'node:stream'
+import { fileURLToPath } from 'node:url'
+import type { Prisma } from '@prisma/client'
+import { prisma } from '../database/prisma.ts'
 
-export async function createPropertyListing({
-  title,
-  description,
-  category,
-  price,
-  condoFee,
-  monthlyTax,
-  photos,
-  builtArea,
-  bedrooms,
-  suites,
-  parkingSpots,
-  address,
-  uf,
-  neighborhood,
-  city,
-  zipCode,
-  usersId,
-  elevator,
-  bathroon,
-}: Prisma.PropertyCreateManyInput) {
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export async function createPropertyListing(
+  data: Prisma.PropertyCreateManyInput
+) {
   await prisma.property.create({
-    data: {
-      title,
-      description,
-      category,
-      price,
-      condoFee,
-      monthlyTax,
-      photos,
-      builtArea,
-      bedrooms,
-      suites,
-      parkingSpots,
-      address,
-      uf,
-      neighborhood,
-      city,
-      zipCode,
-      usersId,
-      elevator,
-      bathroon,
-    },
+    data,
   })
 
   return {

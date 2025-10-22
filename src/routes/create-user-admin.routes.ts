@@ -1,10 +1,10 @@
-import { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
-import { userSchemaRequest } from '../models/user'
-import { UserAlreadyExistError } from '../functions/errors/user-already-exist'
+import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { createUserAdmin } from '../functions/create-user-admin'
+import { createUserAdmin } from '../functions/create-user-admin.ts'
+import { UserAlreadyExistError } from '../functions/errors/user-already-exist.ts'
+import { userSchemaRequest } from '../models/user.ts'
 
-export const createUserAdminRoutes: FastifyPluginCallbackZod = (app) => {
+export const createUserAdminRoutes: FastifyPluginCallbackZod = app => {
   app.post(
     '/create-admin',
     {
