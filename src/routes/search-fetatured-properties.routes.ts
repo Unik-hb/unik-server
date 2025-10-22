@@ -1,11 +1,9 @@
-import { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
-import { searchFeaturedProperties } from '../functions/search-featured-properties'
-import { propertiesSchemaResponse } from '../models/property'
+import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z, { ZodError } from 'zod'
+import { searchFeaturedProperties } from '../functions/search-featured-properties.ts'
+import { propertiesSchemaResponse } from '../models/property.ts'
 
-export const searchFeaturedPropertiesRoutes: FastifyPluginCallbackZod = (
-  app
-) => {
+export const searchFeaturedPropertiesRoutes: FastifyPluginCallbackZod = app => {
   app.get(
     '/search-featured-properties',
     {

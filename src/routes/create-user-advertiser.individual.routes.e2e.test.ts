@@ -1,6 +1,6 @@
-import { test, expect } from 'vitest'
 import request from 'supertest'
-import { app } from '../app'
+import { expect, test } from 'vitest'
+import { app } from '../app.ts'
 
 test('(E2E) Create an advertiser', async () => {
   await app.ready()

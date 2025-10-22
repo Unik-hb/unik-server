@@ -1,16 +1,15 @@
-import { prisma } from '../database/prisma'
+import { prisma } from '../database/prisma.ts'
 
 interface GetAllPropertiesQuery {
   pageIndex?: number
   title?: string
-  address?: string
+  neighborhood?: string
   category?: 'RENT' | 'SALE' | undefined
   priceMin?: number
   priceMax?: number
   builtAreaMin?: number
   builtAreaMax?: number
   bedrooms?: number
-  suites?: number
   bathroon?: number
   elevator?: boolean
 }
@@ -18,14 +17,13 @@ interface GetAllPropertiesQuery {
 export async function getAllProperties({
   pageIndex,
   title,
-  address,
+  neighborhood,
   category,
   priceMin,
   priceMax,
   builtAreaMin,
   builtAreaMax,
   bedrooms,
-  suites,
   bathroon,
   elevator,
 }: GetAllPropertiesQuery) {
@@ -35,8 +33,8 @@ export async function getAllProperties({
         contains: title ?? '',
         mode: 'insensitive',
       },
-      address: {
-        contains: address ?? '',
+      neighborhood: {
+        contains: neighborhood ?? '',
         mode: 'insensitive',
       },
       category: {
@@ -52,9 +50,6 @@ export async function getAllProperties({
       },
       bedrooms: {
         equals: bedrooms ? bedrooms : undefined,
-      },
-      suites: {
-        equals: suites ? suites : undefined,
       },
       bathroon: {
         equals: bathroon ? bathroon : undefined,
@@ -79,8 +74,8 @@ export async function getAllProperties({
         mode: 'insensitive',
       },
 
-      address: {
-        contains: address ?? '',
+      neighborhood: {
+        contains: neighborhood ?? '',
         mode: 'insensitive',
       },
       category: {
@@ -96,9 +91,6 @@ export async function getAllProperties({
       },
       bedrooms: {
         equals: bedrooms ? bedrooms : undefined,
-      },
-      suites: {
-        equals: suites ? suites : undefined,
       },
       bathroon: {
         equals: bathroon ? bathroon : undefined,

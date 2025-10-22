@@ -1,7 +1,7 @@
-import { test, expect } from 'vitest'
 import request from 'supertest'
-import { app } from '../app'
-import { makeUsers } from '../../tests/factories/make-users'
+import { expect, test } from 'vitest'
+import { makeUsers } from '../../tests/factories/make-users.ts'
+import { app } from '../app.ts'
 
 test('(E2E) Create new property listing', async () => {
   await app.ready()
@@ -27,7 +27,12 @@ test('(E2E) Create new property listing', async () => {
     .field('neighborhood', 'Bairro 1')
     .field('city', 'Cidade 1')
     .field('zipCode', '36013100')
-    .field('elevator', 'true')
+    .field('elevator', true)
+    .field('airConditioning', true)
+    .field('closet', true)
+    .field('pool', true)
+    .field('sevantsRoom', true)
+    .field('terrace', true)
 
   expect(response.statusCode).toEqual(201)
   expect(response.body).toEqual({

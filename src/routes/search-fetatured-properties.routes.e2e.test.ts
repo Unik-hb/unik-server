@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest'
-import { app } from '../app'
 import request from 'supertest'
+import { expect, test } from 'vitest'
+import { app } from '../app.ts'
 
 test('(E2E) Search featured properties', async () => {
   await app.ready()

@@ -40,6 +40,7 @@ enum PersonType {
 model User {
   id             String       @id @default(uuid())
   name           String
+  description    String?
   company        String?
   email          String       @unique
   password       String
@@ -61,7 +62,7 @@ model User {
 }
 
 model Property {
-  id              String        @id @default(uuid())
+  id              String   @id @default(uuid())
   title           String
   description     String?
   category        Category
@@ -74,18 +75,24 @@ model Property {
   suites          Int
   bathroon        Int?
   parkingSpots    Int
-  updatedRegistry Boolean       @default(false)
+  updatedRegistry Boolean  @default(false)
   address         String
   uf              String?
   neighborhood    String
   city            String
   zipCode         String
-  elevator        Boolean       @default(false)
-  status          ListingStatus @default(PENDING)
-  User            User?         @relation(fields: [usersId], references: [id])
-  usersId         String?
-  sales           Sale[]
-  rentals         Rental[]
+  elevator        Boolean  @default(false)
+  airConditioning Boolean  @default(false)
+  pool            Boolean  @default(false)
+  sevantsRoom     Boolean  @default(false)
+  terrace         Boolean  @default(false)
+  closet          Boolean  @default(false)
+
+  status  ListingStatus @default(PENDING)
+  User    User?         @relation(fields: [usersId], references: [id])
+  usersId String?
+  sales   Sale[]
+  rentals Rental[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
