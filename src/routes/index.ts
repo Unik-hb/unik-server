@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+import { authenticateRoutes } from './authenticate.routes.ts'
 import { createPropertyListingRoutes } from './create-property-listing.routes.ts'
 import { createUserAdminRoutes } from './create-user-admin.routes.ts'
 import { createUserAdvertiserIndividualRoutes } from './create-user-advertiser.individual.routes.ts'
@@ -7,10 +8,14 @@ import { getAllBrokersRoutes } from './get-all-brokers.routes.ts'
 import { getAllPropertiesRoutes } from './get-all-properties.routes.ts'
 import { getDetailsBrokerRoutes } from './get-details-broker.routes.ts'
 import { getDetailsPropertyRoutes } from './get-details-property.routes.ts'
+import { getProfileRoutes } from './get-profile.routes.ts'
 import { searchFeaturedPropertiesRoutes } from './search-fetatured-properties.routes.ts'
 import { updateRoleUserBrokerRoutes } from './update-role-user-broker.routes.ts'
 
 export async function routes(app: FastifyInstance) {
+  app.register(authenticateRoutes)
+  app.register(getProfileRoutes)
+
   app.register(createUserAdvertiserIndividualRoutes, { prefix: 'users' })
   app.register(createUserAdvertiserLegalRoutes, { prefix: 'users' })
   app.register(createUserAdminRoutes, { prefix: 'users' })
