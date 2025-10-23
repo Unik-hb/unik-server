@@ -94,3 +94,16 @@ export const getDetailsBrokerSchemaResponse = z.object({
 export const userEmailSchemaRequest = z.object({
   email: z.string(),
 })
+
+export const getProfileSchemaResponse = z.object({
+  user: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      email: z.string(),
+      description: z.string().nullable(),
+      phone: z.string().nullable(),
+      photo: z.string().nullable(),
+    })
+    .nullable(),
+})
