@@ -1,5 +1,8 @@
+import path, { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { fastifyCors } from '@fastify/cors'
 import fastifyMultipart from '@fastify/multipart'
+import fastifyStatic from '@fastify/static'
 import fastifySwagger from '@fastify/swagger'
 import scalarAPIReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
@@ -12,6 +15,9 @@ import {
 import { env } from './env/env.ts'
 import { routes } from './routes/index.ts'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.register(fastifyCors, {
@@ -20,15 +26,12 @@ app.register(fastifyCors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 })
 
-app.setValidatorCompiler(validatorCompiler)
-app.setSerializerCompiler(serializerCompiler)
+const uploadsPath = join(__dirname, '..', '..', 'uploads')
 
-app.register(fastifyMultipart, {
-  attachFieldsToBody: true,
-  limits: {
-    fileSize: 1 * 1024 * 1024, // 1MB
-    files: 15,
-  },
+app.register(fastifyStatic, {
+  root: uploadsPath,
+  prefix: '/files/',
+  decorateReply: true,
 })
 
 if (env.NODE_ENV === 'development') {
@@ -36,7 +39,6 @@ if (env.NODE_ENV === 'development') {
     openapi: {
       info: {
         title: 'Unik API',
-        description: 'Unik API documentation',
         version: '1.0.0',
       },
     },
@@ -47,9 +49,20 @@ if (env.NODE_ENV === 'development') {
   app.register(scalarAPIReference, {
     routePrefix: '/docs',
     configuration: {
-      theme: 'deepSpace',
+      theme: 'elysiajs',
     },
   })
 }
+
+app.register(fastifyMultipart, {
+  attachFieldsToBody: true,
+  limits: {
+    fileSize: 1 * 1024 * 1024, // 1MB
+    files: 15,
+  },
+})
+
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
 
 app.register(routes)
