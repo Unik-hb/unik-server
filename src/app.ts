@@ -1,6 +1,8 @@
 import path, { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import fastifyCookie from '@fastify/cookie'
 import { fastifyCors } from '@fastify/cors'
+import fastifyJwt from '@fastify/jwt'
 import fastifyMultipart from '@fastify/multipart'
 import fastifyStatic from '@fastify/static'
 import fastifySwagger from '@fastify/swagger'
@@ -33,6 +35,19 @@ app.register(fastifyStatic, {
   prefix: '/files/',
   decorateReply: true,
 })
+
+app.register(fastifyJwt, {
+  secret: env.PRIVATE_KEY_JWT,
+  sign: {
+    expiresIn: '7d',
+  },
+  cookie: {
+    cookieName: 'token',
+    signed: false,
+  },
+})
+
+app.register(fastifyCookie)
 
 if (env.NODE_ENV === 'development') {
   app.register(fastifySwagger, {

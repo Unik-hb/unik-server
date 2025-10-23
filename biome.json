@@ -15,7 +15,8 @@
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"noUnreachable": "off"
+				"noUnreachable": "off",
+				"noUnusedVariables": "off"
 			},
 			"complexity": {
 				"noUselessTernary": "off"
