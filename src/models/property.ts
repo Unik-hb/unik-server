@@ -72,6 +72,11 @@ export const propertySchemaRequest = z.object({
     z.coerce.number()
   ),
 
+  updatedRegistry: z.preprocess(
+    file => (file as MultipartValue).value,
+    z.coerce.number()
+  ),
+
   parkingSpots: z.preprocess(
     file => (file as MultipartValue).value,
     z.coerce.number()
@@ -127,7 +132,7 @@ export const propertiesSchemaResponse = z.object({
       suites: z.number(),
       bathroon: z.number().nullable(),
       parkingSpots: z.number(),
-      updatedRegistry: z.boolean(),
+      updatedRegistry: z.number().nullable(),
       address: z.string(),
       uf: z.string().nullable(),
       neighborhood: z.string(),
@@ -176,7 +181,7 @@ export const getAllPropertiesResponse = z.object({
       suites: z.number(),
       bathroon: z.number().nullable(),
       parkingSpots: z.number(),
-      updatedRegistry: z.boolean(),
+      updatedRegistry: z.number().nullable(),
       address: z.string(),
       uf: z.string().nullable(),
       neighborhood: z.string(),
@@ -192,4 +197,36 @@ export const getAllPropertiesResponse = z.object({
     totalCount: z.number(),
     totalPages: z.number(),
   }),
+})
+
+export const getDetailsPropertySchemaResponse = z.object({
+  property: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable(),
+      category: z.enum(['SALE', 'RENT', '']),
+      price: z.number(),
+      condoFee: z.number(),
+      monthlyTax: z.number(),
+      photos: z.preprocess(
+        value => (typeof value === 'string' ? JSON.parse(value) : value),
+        z.array(z.string()).nullable()
+      ),
+      builtArea: z.number(),
+      bedrooms: z.number(),
+      suites: z.number(),
+      bathroon: z.number().nullable(),
+      parkingSpots: z.number(),
+      updatedRegistry: z.number().nullable(),
+      address: z.string(),
+      uf: z.string().nullable(),
+      neighborhood: z.string(),
+      city: z.string(),
+      zipCode: z.string(),
+      status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
+      usersId: z.string().nullable(),
+      elevator: z.boolean().nullable(),
+    })
+    .nullable(),
 })

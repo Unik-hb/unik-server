@@ -15,7 +15,7 @@ test('(E2E) Update user role broker', async () => {
       email: user.email,
     })
 
-  expect(response.status).toEqual(204)
+  expect(response.status).toEqual(200)
   expect(response.body).toEqual({
     message: 'Usuário agora é um corretor.',
   })

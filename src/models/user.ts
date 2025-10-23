@@ -59,3 +59,38 @@ export const userBrokerSchemaResponse = z.object({
     })
     .array(),
 })
+
+export const getDetailsBrokerSchemaResponse = z.object({
+  broker: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string().nullable(),
+      email: z.string(),
+      photo: z.string().nullable(),
+      phone: z.string().nullable(),
+      properties: z
+        .object({
+          id: z.string(),
+          photos: z.preprocess(
+            value => (typeof value === 'string' ? JSON.parse(value) : value),
+            z.array(z.string()).nullable()
+          ),
+          category: z.string(),
+          title: z.string(),
+          city: z.string(),
+          neighborhood: z.string(),
+          builtArea: z.number(),
+          bedrooms: z.number(),
+          bathroon: z.number().nullable(),
+          price: z.number(),
+          status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
+        })
+        .array(),
+    })
+    .nullable(),
+})
+
+export const userEmailSchemaRequest = z.object({
+  email: z.string(),
+})

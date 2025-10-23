@@ -75,7 +75,7 @@ model Property {
   suites          Int
   bathroon        Int?
   parkingSpots    Int
-  updatedRegistry Boolean  @default(false)
+  updatedRegistry Int?
   address         String
   uf              String?
   neighborhood    String
