@@ -1,4 +1,4 @@
-name: "unik"
+name: "db_unik"
 
 services:
   pg:
@@ -8,4 +8,4 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=unik
+      - POSTGRES_DB=db_unik

@@ -2,7 +2,6 @@ import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z, { ZodError } from 'zod'
 import { getProfile } from '../functions/get-profile.ts'
 import { ensureAuthenticate } from '../middleware/ensure-authenticate.ts'
-import { getProfileSchemaResponse } from '../models/user.ts'
 
 export const getProfileRoutes: FastifyPluginCallbackZod = app => {
   app.get(
@@ -13,10 +12,25 @@ export const getProfileRoutes: FastifyPluginCallbackZod = app => {
         tags: ['Users'],
         description: 'Get user profile',
         response: {
-          200: getProfileSchemaResponse,
-          400: {
-            message: z.string().describe(''),
-          },
+          200: z.object({
+            user: z
+              .object({
+                id: z.string(),
+                name: z.string(),
+                email: z.string(),
+                description: z.string().nullable(),
+                phone: z.string().nullable(),
+                photo: z.string().nullable(),
+                cpf: z.string().nullable(),
+                cnpj: z.string().nullable(),
+                company: z.string().nullable(),
+                role: z.enum(['ADMIN', 'ADVERTISER', 'BROKER']),
+              })
+              .nullable(),
+          }),
+          400: z.object({
+            message: z.string(),
+          }),
         },
       },
     },
