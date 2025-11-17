@@ -1,19 +1,20 @@
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { createUserAdmin } from '../functions/create-user-admin.ts'
+import { createAdvertiserLegal } from '../functions/create-advertiser-legal.ts'
 import { UserAlreadyExistError } from '../functions/errors/user-already-exist.ts'
 
-export const createUserAdminRoutes: FastifyPluginCallbackZod = app => {
+export const createAdvertiserLegalRoutes: FastifyPluginCallbackZod = app => {
   app.post(
-    '/create-user-admin',
+    '/create-advertiser-legal',
     {
       schema: {
         tags: ['Users'],
-        description: 'Create a new user admin',
+        description: 'Create a new advertiser legal',
         body: z.object({
           name: z.string(),
           email: z.email(),
           password: z.string(),
+          cnpj: z.string(),
         }),
 
         response: {
@@ -26,12 +27,13 @@ export const createUserAdminRoutes: FastifyPluginCallbackZod = app => {
     },
     async (request, reply) => {
       try {
-        const { name, email, password } = request.body
+        const { name, email, password, cnpj } = request.body
 
-        await createUserAdmin({
+        await createAdvertiserLegal({
           name,
           email,
           password,
+          cnpj,
         })
 
         return reply.status(201).send()

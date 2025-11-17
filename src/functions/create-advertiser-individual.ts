@@ -2,17 +2,19 @@ import { hash } from 'bcryptjs'
 import { prisma } from '../database/prisma.ts'
 import { UserAlreadyExistError } from './errors/user-already-exist.ts'
 
-type CreateUserAdminRequest = {
+type CreateAdvertiserIndividualRequest = {
   name: string
   email: string
   password: string
+  cpf: string
 }
 
-export async function createUserAdmin({
+export async function createAdvertiserIndividual({
   name,
   email,
   password,
-}: CreateUserAdminRequest) {
+  cpf,
+}: CreateAdvertiserIndividualRequest) {
   const userAlreadyExists = await prisma.user.findUnique({
     where: {
       email,
@@ -30,7 +32,9 @@ export async function createUserAdmin({
       name,
       email,
       password: passwordHash,
-      role: 'ADMIN',
+      cpf,
+      personType: 'INDIVIDUAL',
+      role: 'ADVERTISER',
     },
   })
 }

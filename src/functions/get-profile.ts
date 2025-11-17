@@ -16,6 +16,10 @@ export async function getProfile({ usersId }: GetProfileProps) {
       email: true,
       phone: true,
       description: true,
+      cpf: true,
+      cnpj: true,
+      company: true,
+      role: true,
       photo: true,
     },
   })
