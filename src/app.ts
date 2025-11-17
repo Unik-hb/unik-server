@@ -28,7 +28,16 @@ app.register(fastifyCors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 })
 
-const uploadsPath = join(__dirname, '..', '..', 'uploads')
+const uploadsPath = join(__dirname, '..', 'uploads')
+
+app.register(fastifyMultipart, {
+  prefix: 'files',
+  attachFieldsToBody: true,
+  limits: {
+    fileSize: 1 * 1024 * 1024, // 1MB
+    files: 15,
+  },
+})
 
 app.register(fastifyStatic, {
   root: uploadsPath,
@@ -69,13 +78,7 @@ if (env.NODE_ENV === 'development') {
   })
 }
 
-app.register(fastifyMultipart, {
-  attachFieldsToBody: true,
-  limits: {
-    fileSize: 1 * 1024 * 1024, // 1MB
-    files: 15,
-  },
-})
+
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)

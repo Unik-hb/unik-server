@@ -1,30 +1,37 @@
 import type { FastifyInstance } from 'fastify'
+import { approvedPropertyRoutes } from './approved-property.routes.ts'
 import { authenticateRoutes } from './authenticate.routes.ts'
-import { createPropertyListingRoutes } from './create-property-listing.routes.ts'
+import { createAdvertiserIndividualRoutes } from './create-advertiser-individual.routes.ts'
+import { createAdvertiserLegalRoutes } from './create-advertiser-legal.routes.ts'
+import { createPropertiesRoutes } from './create-properties.routes.ts'
 import { createUserAdminRoutes } from './create-user-admin.routes.ts'
-import { createUserAdvertiserIndividualRoutes } from './create-user-advertiser.individual.routes.ts'
-import { createUserAdvertiserLegalRoutes } from './create-user-advertiser.legal.routes.ts'
-import { getAllBrokersRoutes } from './get-all-brokers.routes.ts'
-import { getAllPropertiesRoutes } from './get-all-properties.routes.ts'
-import { getDetailsBrokerRoutes } from './get-details-broker.routes.ts'
-import { getDetailsPropertyRoutes } from './get-details-property.routes.ts'
+import { getAllPropertyRoutes } from './get-all-property.routes.ts'
+import { getAllPropertApprovedRoutes } from './get-all-property-approved.routes.ts'
+import { getAllPropertByUsersRoutes } from './get-all-property-by-users.routes.ts'
+import { getDetailsPropertyRoutes } from './get-details-property.ts'
 import { getProfileRoutes } from './get-profile.routes.ts'
-import { searchFeaturedPropertiesRoutes } from './search-fetatured-properties.routes.ts'
-import { updateRoleUserBrokerRoutes } from './update-role-user-broker.routes.ts'
+import { rejectedPropertyRoutes } from './rejected-property.routes.ts'
+import { revisionPropertyRoutes } from './revision-property.routes.ts'
+import { statePropertyRoutes } from './state-property.routes.ts'
 
 export async function routes(app: FastifyInstance) {
+  // authenticate
   app.register(authenticateRoutes)
   app.register(getProfileRoutes)
 
-  app.register(createUserAdvertiserIndividualRoutes, { prefix: 'users' })
-  app.register(createUserAdvertiserLegalRoutes, { prefix: 'users' })
-  app.register(createUserAdminRoutes, { prefix: 'users' })
-  app.register(getAllBrokersRoutes, { prefix: 'users' })
-  app.register(updateRoleUserBrokerRoutes, { prefix: 'users' })
-  app.register(getDetailsBrokerRoutes, { prefix: 'users' })
+  // properties
+  app.register(createPropertiesRoutes)
+  app.register(getAllPropertyRoutes)
+  app.register(getDetailsPropertyRoutes)
+  app.register(revisionPropertyRoutes)
+  app.register(approvedPropertyRoutes)
+  app.register(rejectedPropertyRoutes)
+  app.register(getAllPropertApprovedRoutes)
+  app.register(getAllPropertByUsersRoutes)
+  app.register(statePropertyRoutes)
 
-  app.register(createPropertyListingRoutes, { prefix: 'properties' })
-  app.register(searchFeaturedPropertiesRoutes, { prefix: 'properties' })
-  app.register(getAllPropertiesRoutes, { prefix: 'properties' })
-  app.register(getDetailsPropertyRoutes, { prefix: 'properties' })
+  // users
+  app.register(createUserAdminRoutes)
+  app.register(createAdvertiserIndividualRoutes)
+  app.register(createAdvertiserLegalRoutes)
 }
