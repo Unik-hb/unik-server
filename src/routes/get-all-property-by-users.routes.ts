@@ -1,20 +1,23 @@
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import z, { ZodError } from 'zod'
-import { getDetailsProperty } from '../functions/get-details-property.ts'
+import { getAllPropertyByUsers } from '../functions/get-all-property-by-users.ts'
 
-export const getDetailsPropertyRoutes: FastifyPluginCallbackZod = app => {
+export const getAllPropertByUsersRoutes: FastifyPluginCallbackZod = app => {
   app.get(
-    '/properties-details/:propertyId',
+    '/properties-all-by-users/:usersId',
     {
       schema: {
         tags: ['Properties'],
-        description: 'Get details of a property',
+        description: 'Get all properties by users',
+        querystring: z.object({
+          pageIndex: z.coerce.number().min(0).default(0),
+        }),
         params: z.object({
-          propertyId: z.string(),
+          usersId: z.string(),
         }),
         response: {
           200: z.object({
-            property: z.object({
+            properties: z.array(z.object({
               id: z.string(),
               status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
               title: z.string(),
@@ -66,7 +69,11 @@ export const getDetailsPropertyRoutes: FastifyPluginCallbackZod = app => {
                 name: z.string(),
                 authorizationDocument: z.string().nullable(),
               }).nullable(),
-            }).nullable(),
+            })),
+            metas: z.object({
+              totalPages: z.number(),
+              totalProperties: z.number(),
+            }),
           }),
           400: z.object({
             message: z.string(),
@@ -77,14 +84,17 @@ export const getDetailsPropertyRoutes: FastifyPluginCallbackZod = app => {
     async (request, reply) => {
       try {
 
-        const { propertyId } = request.params
+        const { pageIndex } = request.query
+        const { usersId } = request.params
 
-        const { property } = await getDetailsProperty({
-          propertyId
+        const { properties, metas } = await getAllPropertyByUsers({
+          usersId,
+          pageIndex,
         })
 
         return reply.status(200).send({
-          property,
+          properties,
+          metas,
         })
       } catch (error) {
         if (error instanceof ZodError) {

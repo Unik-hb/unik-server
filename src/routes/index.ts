@@ -7,10 +7,12 @@ import { createPropertiesRoutes } from './create-properties.routes.ts'
 import { createUserAdminRoutes } from './create-user-admin.routes.ts'
 import { getAllPropertyRoutes } from './get-all-property.routes.ts'
 import { getAllPropertApprovedRoutes } from './get-all-property-approved.routes.ts'
+import { getAllPropertByUsersRoutes } from './get-all-property-by-users.routes.ts'
 import { getDetailsPropertyRoutes } from './get-details-property.ts'
 import { getProfileRoutes } from './get-profile.routes.ts'
 import { rejectedPropertyRoutes } from './rejected-property.routes.ts'
 import { revisionPropertyRoutes } from './revision-property.routes.ts'
+import { statePropertyRoutes } from './state-property.routes.ts'
 
 export async function routes(app: FastifyInstance) {
   // authenticate
@@ -25,6 +27,8 @@ export async function routes(app: FastifyInstance) {
   app.register(approvedPropertyRoutes)
   app.register(rejectedPropertyRoutes)
   app.register(getAllPropertApprovedRoutes)
+  app.register(getAllPropertByUsersRoutes)
+  app.register(statePropertyRoutes)
 
   // users
   app.register(createUserAdminRoutes)

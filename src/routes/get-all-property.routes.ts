@@ -20,7 +20,7 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
               status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
               title: z.string(),
               description: z.string().nullable(),
-              category: z.enum(['SALE', 'RENT']),
+              category: z.enum(['SALE', 'RENT']).nullable(),
               typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL']).nullable(),
               iptu: z.number().nullable(),
               price: z.number(),

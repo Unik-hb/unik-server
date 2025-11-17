@@ -2,12 +2,13 @@ import { prisma } from "../database/prisma.ts";
 
 interface GetAllPropetiesApprovedRequets {
   pageIndex: number
+  usersId?: string
 }
 
-export async function getAllPropertyApproved({ pageIndex }: GetAllPropetiesApprovedRequets) {
+export async function getAllPropertyByUsers({ pageIndex, usersId }: GetAllPropetiesApprovedRequets) {
   const properties = await prisma.property.findMany({
     where: {
-      status: "APPROVED",
+      usersId
     },
 
     skip: pageIndex * 10,
@@ -36,7 +37,7 @@ export async function getAllPropertyApproved({ pageIndex }: GetAllPropetiesAppro
 
   const totalProperties = await prisma.property.count({
     where: {
-      status: "APPROVED",
+      usersId
     },
   })
 

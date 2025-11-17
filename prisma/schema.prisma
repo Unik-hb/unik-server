@@ -57,6 +57,11 @@ enum TypeOfProperty {
   NO_RESIDENCIAL // NÃO RESIDENCIAL
 }
 
+enum State {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id          String     @id @default(uuid())
   name        String
@@ -84,7 +89,7 @@ model Property {
   code            String?         @unique // Código único do imóvel
   title           String
   description     String?
-  category        Category
+  category        Category?
   typeOfProperty  TypeOfProperty?
   iptu            Float?
   price           Float
@@ -118,6 +123,7 @@ model Property {
   petArea         Boolean
   partyRoom       Boolean // Salão de festas
   status          ListingStatus   @default(PENDING)
+  state           State?          @default(ACTIVE)
 
   User    User?   @relation(fields: [usersId], references: [id])
   usersId String?
