@@ -23,7 +23,7 @@ export const getAllPropertByUsersRoutes: FastifyPluginCallbackZod = app => {
               title: z.string(),
               description: z.string().nullable(),
               category: z.enum(['SALE', 'RENT']).nullable(),
-              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL']).nullable(),
+              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'BUILDING', 'SHED', 'NO_RESIDENCIAL']).nullable(),
               iptu: z.number().nullable(),
               price: z.number(),
               condoFee: z.number().nullable(),
@@ -66,7 +66,7 @@ export const getAllPropertByUsersRoutes: FastifyPluginCallbackZod = app => {
                 phone: z.string().nullable(),
               }).nullable(),
               owner: z.object({
-                name: z.string(),
+                name: z.string().nullable(),
                 authorizationDocument: z.string().nullable(),
               }).nullable(),
             })),
