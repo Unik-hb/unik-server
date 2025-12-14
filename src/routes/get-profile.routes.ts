@@ -22,9 +22,10 @@ export const getProfileRoutes: FastifyPluginCallbackZod = app => {
                 phone: z.string().nullable(),
                 photo: z.string().nullable(),
                 cpf: z.string().nullable(),
+                rg: z.string().nullable(),
                 cnpj: z.string().nullable(),
                 company: z.string().nullable(),
-                role: z.enum(['ADMIN', 'ADVERTISER', 'BROKER']),
+                role: z.enum(['ADMIN', 'ADVERTISER', 'BROKER', 'AGENT']),
               })
               .nullable(),
           }),

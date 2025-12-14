@@ -129,6 +129,8 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
                 'FARM',
                 'SHOPS',
                 'GARAGE',
+                'BUILDING',
+                'SHED',
                 'NO_RESIDENCIAL',
               ])
               .optional()
@@ -213,7 +215,95 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
             file => (file as MultipartValue).value,
             z.string()
           ),
+
+          nameOwner: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          rgOwner: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          cpfOwner: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          emailOwner: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          phoneOwner: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          authorizationDocumentOwner: z
+            .custom<MultipartFile>()
+            .refine(file => file.file)
+            .refine(file => !file || file.mimetype.startsWith('image'), {
+              message: 'File must be an image',
+            })
+            .optional(),
+
+          creciDocument: z
+            .custom<MultipartFile>()
+            .refine(file => file.file)
+            .refine(file => !file || file.mimetype.startsWith('image') || file.mimetype === 'application/pdf', {
+              message: 'File must be an image or PDF',
+            })
+            .optional(),
+
+          userType: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.enum(['owner', 'mandatary', 'broker', 'legalEntity'])
+          ),
+
+          name: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          company: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          cnpj: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          cpf: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          rg: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          phone: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          email: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
+          creci: z.preprocess(
+            file => (file as MultipartValue).value,
+            z.string()
+          ).optional(),
+
         }),
+
         response: {
           201: z.object({
             message: z.string().describe('Anúncio criado com sucesso.'),
@@ -266,7 +356,23 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
           residential,
           stairFlights,
           usersId,
-          updatedRegistry
+          updatedRegistry,
+          userType,
+          nameOwner,
+          rgOwner,
+          cpfOwner,
+          emailOwner,
+          phoneOwner,
+          authorizationDocumentOwner,
+          creciDocument,
+          name,
+          company,
+          cnpj,
+          cpf,
+          rg,
+          phone,
+          email,
+          creci,
         } = request.body
 
         const { message } = await createProperties({
@@ -305,7 +411,23 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
           playroom,
           residential,
           stairFlights,
-          updatedRegistry
+          updatedRegistry,
+          userType,
+          nameOwner,
+          rgOwner,
+          cpfOwner,
+          emailOwner,
+          phoneOwner,
+          authorizationDocumentOwner,
+          creciDocument,
+          name,
+          company,
+          cnpj,
+          cpf,
+          rg,
+          phone,
+          email,
+          creci,
         })
 
         return reply.status(201).send({ message })
