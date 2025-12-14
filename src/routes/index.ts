@@ -16,6 +16,7 @@ import { revisionPropertyRoutes } from './revision-property.routes.ts'
 import { setFeaturedPhotoRoutes } from './set-featured-photo.routes.ts'
 import { statePropertyRoutes } from './state-property.routes.ts'
 import { logoutRoutes } from './logout.routes.ts'
+import { editReceivedPropertyRoutes } from './edit-received-property.routes.ts'
 
 export async function routes(app: FastifyInstance) {
   // authenticate
@@ -35,6 +36,7 @@ export async function routes(app: FastifyInstance) {
   app.register(getAllPropertApprovedRoutes)
   app.register(getAllPropertByUsersRoutes)
   app.register(statePropertyRoutes)
+  app.register(editReceivedPropertyRoutes)
 
   // users
   app.register(createUserAdminRoutes)
