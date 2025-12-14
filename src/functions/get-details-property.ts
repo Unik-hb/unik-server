@@ -5,7 +5,7 @@ interface GetDetailsPropetyRequest {
 }
 
 export async function getDetailsProperty({ propertyId }: GetDetailsPropetyRequest) {
-  console.log('propertyId', propertyId);
+
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
@@ -15,13 +15,23 @@ export async function getDetailsProperty({ propertyId }: GetDetailsPropetyReques
       owner: {
         select: {
           name: true,
+          phone: true,
+          email: true,
           authorizationDocument: true
         }
       },
       User: {
         select: {
           name: true,
-          phone: true
+          phone: true,
+          creci: true,
+          photoCreci: true,
+          cnpj: true,
+          company: true,
+          rg: true,
+          cpf: true,
+          email: true,
+          photo: true,
         }
       },
     }

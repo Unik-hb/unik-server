@@ -20,7 +20,7 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
               status: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'REVISION']),
               title: z.string(),
               description: z.string().nullable(),
-              category: z.enum(['SALE', 'RENT']),
+              category: z.enum(['SALE', 'RENT']).nullable(),
               typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL']).nullable(),
               iptu: z.number().nullable(),
               price: z.number(),
@@ -59,6 +59,14 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
               createdAt: z.date(),
               updatedAt: z.date(),
               updatedRegistry: z.string().nullable(),
+              User: z.object({
+                name: z.string(),
+                phone: z.string().nullable(),
+              }).nullable(),
+              owner: z.object({
+                name: z.string(),
+                authorizationDocument: z.string().nullable(),
+              }).nullable(),
             })),
             metas: z.object({
               totalPages: z.number(),
@@ -77,7 +85,7 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
         const { pageIndex } = request.query
 
         const { properties, metas } = await getAllPropertyApproved({
-          pageIndex
+          pageIndex,
         })
 
         return reply.status(200).send({

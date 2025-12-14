@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -54,6 +53,8 @@ enum TypeOfProperty {
   FARM // FAZENDA OU GRANJA
   SHOPS // LOJA
   GARAGE // GARAGEM
+  SHED // GALPÃO
+  BUILDING // EDIFÍCIO
   NO_RESIDENCIAL // NÃO RESIDENCIAL
 }
 
@@ -67,6 +68,7 @@ model User {
   phone       String?
   cpf         String?
   cnpj        String?
+  rg          String?
   personType  PersonType @default(INDIVIDUAL)
   role        Role       @default(ADVERTISER)
   photo       String?
@@ -132,10 +134,10 @@ model Property {
 
 model Owner {
   id                    String  @id @default(uuid())
-  name                  String
-  rg                    String
-  cpf                   String
-  email                 String  @unique
+  name                  String?
+  rg                    String?
+  cpf                   String?
+  email                 String?
   phone                 String?
   authorizationDocument String?
 
