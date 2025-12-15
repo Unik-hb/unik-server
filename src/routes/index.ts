@@ -6,6 +6,7 @@ import { createAdvertiserLegalRoutes } from './create-advertiser-legal.routes.ts
 import { createPropertiesRoutes } from './create-properties.routes.ts'
 import { createUserAdminRoutes } from './create-user-admin.routes.ts'
 import { deletePropertyPhotoRoutes } from './delete-property-photo.routes.ts'
+import { deletePropertyRoutes } from './delete-property.routes.ts'
 import { getAllPropertyRoutes } from './get-all-property.routes.ts'
 import { getAllPropertApprovedRoutes } from './get-all-property-approved.routes.ts'
 import { getAllPropertByUsersRoutes } from './get-all-property-by-users.routes.ts'
@@ -17,6 +18,8 @@ import { setFeaturedPhotoRoutes } from './set-featured-photo.routes.ts'
 import { statePropertyRoutes } from './state-property.routes.ts'
 import { logoutRoutes } from './logout.routes.ts'
 import { editReceivedPropertyRoutes } from './edit-received-property.routes.ts'
+import { listOfPropertiesSoldRentedRejectedRoute } from './list-of-properties-sold-rented-rejected.routes.ts'
+import { markAsSoldOrRentedRoutes } from './mark-as-sold-or-rented.routes.ts'
 
 export async function routes(app: FastifyInstance) {
   // authenticate
@@ -29,6 +32,7 @@ export async function routes(app: FastifyInstance) {
   app.register(getAllPropertyRoutes)
   app.register(getDetailsPropertyRoutes)
   app.register(deletePropertyPhotoRoutes)
+  app.register(deletePropertyRoutes)
   app.register(setFeaturedPhotoRoutes)
   app.register(revisionPropertyRoutes)
   app.register(approvedPropertyRoutes)
@@ -37,6 +41,8 @@ export async function routes(app: FastifyInstance) {
   app.register(getAllPropertByUsersRoutes)
   app.register(statePropertyRoutes)
   app.register(editReceivedPropertyRoutes)
+  app.register(listOfPropertiesSoldRentedRejectedRoute)
+  app.register(markAsSoldOrRentedRoutes)
 
   // users
   app.register(createUserAdminRoutes)

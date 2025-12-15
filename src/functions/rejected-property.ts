@@ -10,7 +10,8 @@ export async function rejectedProperty({ propertyId }: RejectedPropertyRequest) 
       id: propertyId
     },
     data: {
-      status: "REJECTED"
+      status: "REJECTED",
+      statusPost: "INACTIVE"
     }
   })
 

@@ -15,7 +15,6 @@ export const createAdvertiserIndividualRoutes: FastifyPluginCallbackZod =
             name: z.string(),
             email: z.email(),
             password: z.string(),
-            cpf: z.string(),
           }),
 
           response: {
@@ -28,13 +27,12 @@ export const createAdvertiserIndividualRoutes: FastifyPluginCallbackZod =
       },
       async (request, reply) => {
         try {
-          const { name, email, password, cpf } = request.body
+          const { name, email, password } = request.body
 
           await createAdvertiserIndividual({
             name,
             email,
-            password,
-            cpf,
+            password
           })
 
           return reply.status(201).send()

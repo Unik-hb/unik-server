@@ -11,6 +11,32 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
         description: 'Get all approved properties',
         querystring: z.object({
           pageIndex: z.coerce.number().min(0).default(0),
+          neighborhood: z.string().nullable().default(null),
+          category: z.enum(['SALE', 'RENT']).nullable().default(null),
+          minPrice: z.coerce.number().nullable().default(null),
+          maxPrice: z.coerce.number().nullable().default(null),
+          typeOfProperty: z
+            .enum([
+              'HOUSE',
+              'APARTMENT',
+              'STUDIO',
+              'LOFT',
+              'LOT',
+              'LAND',
+              'FARM',
+              'SHOPS',
+              'GARAGE',
+              'BUILDING',
+              'SHED',
+              'NO_RESIDENCIAL',
+            ])
+            .nullable()
+            .default(null),
+          bathrooms: z.coerce.number().nullable().default(null), // banheiro
+          bedrooms: z.coerce.number().nullable().default(null), // quarto
+          suites: z.coerce.number().nullable().default(null), // suite
+          parkingSpots: z.coerce.number().nullable().default(null), // vagas
+          elevator: z.coerce.boolean().nullable().default(null), // elevador
         }),
 
         response: {
@@ -21,7 +47,7 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
               title: z.string(),
               description: z.string().nullable(),
               category: z.enum(['SALE', 'RENT']).nullable(),
-              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL']).nullable(),
+              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'BUILDING', 'SHED', 'NO_RESIDENCIAL']).nullable(),
               iptu: z.number().nullable(),
               price: z.number(),
               condoFee: z.number().nullable(),
@@ -30,13 +56,13 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
                 z.array(z.string()).nullable()
               ),
               builtArea: z.string(),
-              bedrooms: z.string(),
-              suites: z.string(),
-              parkingSpots: z.string(),
+              bedrooms: z.number(),
+              suites: z.number(),
+              parkingSpots: z.number(),
               address: z.string(),
               addressNumber: z.string().nullable(),
               uf: z.string().nullable(),
-              bathrooms: z.string().nullable(),
+              bathrooms: z.number().nullable(),
               neighborhood: z.string(),
               city: z.string(),
               zipCode: z.string(),
@@ -53,7 +79,7 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
               petArea: z.boolean(),
               playroom: z.boolean(),
               residential: z.boolean(),
-              stairFlights: z.string().nullable(),
+              stairFlights: z.number().nullable(),
               ownerId: z.string().nullable(),
               usersId: z.string().nullable(),
               createdAt: z.date(),
@@ -64,7 +90,7 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
                 phone: z.string().nullable(),
               }).nullable(),
               owner: z.object({
-                name: z.string(),
+                name: z.string().nullable(),
                 authorizationDocument: z.string().nullable(),
               }).nullable(),
             })),
@@ -82,10 +108,32 @@ export const getAllPropertApprovedRoutes: FastifyPluginCallbackZod = app => {
     async (request, reply) => {
       try {
 
-        const { pageIndex } = request.query
+        const {
+          pageIndex,
+          category,
+          minPrice,
+          maxPrice,
+          typeOfProperty,
+          bathrooms,
+          bedrooms,
+          suites,
+          parkingSpots,
+          elevator,
+          neighborhood
+        } = request.query
 
         const { properties, metas } = await getAllPropertyApproved({
           pageIndex,
+          category,
+          minPrice,
+          neighborhood,
+          maxPrice,
+          typeOfProperty,
+          bathrooms,
+          bedrooms,
+          suites,
+          parkingSpots,
+          elevator
         })
 
         return reply.status(200).send({

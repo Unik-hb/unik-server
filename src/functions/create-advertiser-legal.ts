@@ -6,14 +6,12 @@ type CreateAdvertiserLegalRequest = {
   name: string
   email: string
   password: string
-  cnpj: string
 }
 
 export async function createAdvertiserLegal({
   name,
   email,
   password,
-  cnpj,
 }: CreateAdvertiserLegalRequest) {
   const userAlreadyExists = await prisma.user.findUnique({
     where: {
@@ -32,7 +30,6 @@ export async function createAdvertiserLegal({
       name,
       email,
       password: passwordHash,
-      cnpj,
       personType: 'COMPANY',
       role: 'ADVERTISER',
     },
