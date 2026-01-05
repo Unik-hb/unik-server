@@ -55,10 +55,10 @@ CREATE TABLE "properties" (
     "condoFee" DOUBLE PRECISION NOT NULL,
     "photos" JSONB,
     "builtArea" TEXT NOT NULL,
-    "bedrooms" TEXT NOT NULL,
-    "suites" TEXT NOT NULL,
-    "bathrooms" TEXT,
-    "parkingSpots" TEXT NOT NULL,
+    "bedrooms" INTEGER NOT NULL,
+    "suites" INTEGER NOT NULL,
+    "bathrooms" INTEGER,
+    "parkingSpots" INTEGER NOT NULL,
     "updatedRegistry" TEXT,
     "address" TEXT NOT NULL,
     "addressNumber" TEXT,
@@ -66,7 +66,7 @@ CREATE TABLE "properties" (
     "neighborhood" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "zipCode" TEXT NOT NULL,
-    "stairFlights" TEXT,
+    "stairFlights" INTEGER,
     "motiveRevision" TEXT,
     "elevator" BOOLEAN NOT NULL,
     "airConditioning" BOOLEAN NOT NULL,
@@ -103,6 +103,24 @@ CREATE TABLE "owners" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "owners_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "sales" (
+    "id" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "sales_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "rents" (
+    "id" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "rents_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

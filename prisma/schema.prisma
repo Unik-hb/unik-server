@@ -153,3 +153,19 @@ model Owner {
 
   @@map("owners")
 }
+
+model Sales {
+  id String @id @default(uuid())
+  amount Float
+  date DateTime @default(now())
+
+  @@map("sales")
+}
+
+model Rent {
+  id String @id @default(uuid())
+  amount Float
+  date DateTime @default(now())
+
+  @@map("rents")
+}

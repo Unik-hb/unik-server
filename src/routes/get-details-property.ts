@@ -59,6 +59,7 @@ export const getDetailsPropertyRoutes: FastifyPluginCallbackZod = app => {
               createdAt: z.date(),
               updatedAt: z.date(),
               updatedRegistry: z.string().nullable(),
+              motiveRevision: z.string().nullable(),
               User: z.object({
                 name: z.string(),
                 email: z.string().nullable(),

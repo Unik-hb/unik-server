@@ -72,8 +72,8 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
             .custom<MultipartFile>()
             .refine(file => file.file)
             .refine(
-              file => !file || file.file.bytesRead <= 1 * 1024 * 1024,
-              'File size must be less than 1MB'
+              file => !file || file.file.bytesRead <= 2 * 1024 * 1024,
+              'File size must be less than 2MB'
             )
             .refine(file => !file || file.mimetype.startsWith('image'), {
               message: 'File must be an image',
@@ -214,7 +214,7 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
           stairFlights: z.preprocess(
             file => (file as MultipartValue).value,
             z.coerce.number()
-          ),
+          ).optional(),
 
           nameOwner: z.preprocess(
             file => (file as MultipartValue).value,
