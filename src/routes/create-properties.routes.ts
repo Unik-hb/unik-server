@@ -18,7 +18,7 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
         body: z.object({
           title: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           iptu: z.preprocess(
@@ -33,7 +33,7 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
 
           description: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           price: z.preprocess(
@@ -43,37 +43,37 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
 
           address: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           city: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           uf: z.preprocess(file => (file as MultipartValue).value, z.string()),
 
           bathrooms: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.coerce.number()
           ),
 
           neighborhood: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           zipCode: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.string().trim()
           ),
 
           photos: z
             .custom<MultipartFile>()
             .refine(file => file.file)
             .refine(
-              file => !file || file.file.bytesRead <= 1 * 1024 * 1024,
-              'File size must be less than 1MB'
+              file => !file || file.file.bytesRead <= 2 * 1024 * 1024,
+              'File size must be less than 2MB'
             )
             .refine(file => !file || file.mimetype.startsWith('image'), {
               message: 'File must be an image',
@@ -98,12 +98,12 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
 
           bedrooms: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.coerce.number()
           ),
 
           suites: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.coerce.number()
           ),
 
           updatedRegistry: z.preprocess(
@@ -113,7 +113,7 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
 
           parkingSpots: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
+            z.coerce.number()
           ),
 
           typeOfProperty: z.preprocess(
@@ -213,8 +213,8 @@ export const createPropertiesRoutes: FastifyPluginCallbackZod = app => {
 
           stairFlights: z.preprocess(
             file => (file as MultipartValue).value,
-            z.string()
-          ),
+            z.coerce.number()
+          ).optional(),
 
           nameOwner: z.preprocess(
             file => (file as MultipartValue).value,

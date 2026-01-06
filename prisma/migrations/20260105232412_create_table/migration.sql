@@ -14,7 +14,10 @@ CREATE TYPE "CommissionType" AS ENUM ('REAL_ESTATE', 'BROKER_SALE', 'BROKER_CAPT
 CREATE TYPE "PersonType" AS ENUM ('INDIVIDUAL', 'COMPANY');
 
 -- CreateEnum
-CREATE TYPE "TypeOfProperty" AS ENUM ('HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL');
+CREATE TYPE "TypeOfProperty" AS ENUM ('HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'SHED', 'BUILDING', 'NO_RESIDENCIAL');
+
+-- CreateEnum
+CREATE TYPE "StatusPost" AS ENUM ('ACTIVE', 'INACTIVE');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -27,6 +30,7 @@ CREATE TABLE "users" (
     "phone" TEXT,
     "cpf" TEXT,
     "cnpj" TEXT,
+    "rg" TEXT,
     "personType" "PersonType" NOT NULL DEFAULT 'INDIVIDUAL',
     "role" "Role" NOT NULL DEFAULT 'ADVERTISER',
     "photo" TEXT,
@@ -51,10 +55,10 @@ CREATE TABLE "properties" (
     "condoFee" DOUBLE PRECISION NOT NULL,
     "photos" JSONB,
     "builtArea" TEXT NOT NULL,
-    "bedrooms" TEXT NOT NULL,
-    "suites" TEXT NOT NULL,
-    "bathrooms" TEXT,
-    "parkingSpots" TEXT NOT NULL,
+    "bedrooms" INTEGER NOT NULL,
+    "suites" INTEGER NOT NULL,
+    "bathrooms" INTEGER,
+    "parkingSpots" INTEGER NOT NULL,
     "updatedRegistry" TEXT,
     "address" TEXT NOT NULL,
     "addressNumber" TEXT,
@@ -62,7 +66,7 @@ CREATE TABLE "properties" (
     "neighborhood" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "zipCode" TEXT NOT NULL,
-    "stairFlights" TEXT,
+    "stairFlights" INTEGER,
     "motiveRevision" TEXT,
     "elevator" BOOLEAN NOT NULL,
     "airConditioning" BOOLEAN NOT NULL,
@@ -78,6 +82,7 @@ CREATE TABLE "properties" (
     "petArea" BOOLEAN NOT NULL,
     "partyRoom" BOOLEAN NOT NULL,
     "status" "ListingStatus" NOT NULL DEFAULT 'PENDING',
+    "statusPost" "StatusPost" DEFAULT 'ACTIVE',
     "usersId" TEXT,
     "ownerId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -89,10 +94,10 @@ CREATE TABLE "properties" (
 -- CreateTable
 CREATE TABLE "owners" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "rg" TEXT NOT NULL,
-    "cpf" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "name" TEXT,
+    "rg" TEXT,
+    "cpf" TEXT,
+    "email" TEXT,
     "phone" TEXT,
     "authorizationDocument" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -100,14 +105,29 @@ CREATE TABLE "owners" (
     CONSTRAINT "owners_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "sales" (
+    "id" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "sales_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "rents" (
+    "id" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "rents_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "properties_code_key" ON "properties"("code");
-
--- CreateIndex
-CREATE UNIQUE INDEX "owners_email_key" ON "owners"("email");
 
 -- AddForeignKey
 ALTER TABLE "properties" ADD CONSTRAINT "properties_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;

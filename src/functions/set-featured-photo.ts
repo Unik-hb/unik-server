@@ -1,6 +1,6 @@
 import { prisma } from '../database/prisma.ts'
-import { PropertyNotFoundError } from './errors/property-not-found.ts'
 import { PhotoNotFoundError } from './errors/photo-not-found.ts'
+import { PropertyNotFoundError } from './errors/property-not-found.ts'
 
 interface SetFeaturedPhotoInput {
   propertyId: string
@@ -21,7 +21,7 @@ export async function setFeaturedPhoto({
   }
 
   // Converter o campo photos para array de strings
-  const photosArray = property.photos as unknown as string[]
+  const photosArray = property.photos as string[]
 
   if (!photosArray || !Array.isArray(photosArray)) {
     throw new Error('Propriedade não possui fotos')
@@ -32,7 +32,7 @@ export async function setFeaturedPhoto({
   }
 
   // Remover a foto da posição atual
-  const filteredPhotos = photosArray.filter((photo) => photo !== photoPath)
+  const filteredPhotos = photosArray.filter(photo => photo !== photoPath)
 
   const reorderedPhotos = [photoPath, ...filteredPhotos]
 

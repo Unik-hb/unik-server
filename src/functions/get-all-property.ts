@@ -6,10 +6,12 @@ interface GetAllPropetiesRequets {
 
 export async function getAllProperty({ pageIndex }: GetAllPropetiesRequets) {
   const properties = await prisma.property.findMany({
+    where: {
+      statusPost: 'ACTIVE'
+    },
 
     skip: pageIndex * 10,
     take: 10,
-
 
     orderBy: {
       createdAt: 'desc'

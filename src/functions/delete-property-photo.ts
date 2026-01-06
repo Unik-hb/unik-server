@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { prisma } from '../database/prisma.ts'
-import { PropertyNotFoundError } from './errors/property-not-found.ts'
 import { PhotoNotFoundError } from './errors/photo-not-found.ts'
+import { PropertyNotFoundError } from './errors/property-not-found.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -38,7 +38,7 @@ export async function deletePropertyPhoto({
   }
 
   // Remover a foto do array
-  const updatedPhotos = photosArray.filter((photo) => photo !== photoPath)
+  const updatedPhotos = photosArray.filter(photo => photo !== photoPath)
 
   // Atualizar o banco de dados
   await prisma.property.update({
@@ -51,7 +51,11 @@ export async function deletePropertyPhoto({
     const filename = photoPath.split('/').pop() // Pega apenas o nome do arquivo
 
     if (filename) {
-      const filePath = path.resolve(__dirname, '../../uploads/properties', filename)
+      const filePath = path.resolve(
+        __dirname,
+        '../../uploads/properties',
+        filename
+      )
 
       // Verificar se o arquivo existe antes de deletar
       if (fs.existsSync(filePath)) {

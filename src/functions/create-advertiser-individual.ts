@@ -6,14 +6,12 @@ type CreateAdvertiserIndividualRequest = {
   name: string
   email: string
   password: string
-  cpf: string
 }
 
 export async function createAdvertiserIndividual({
   name,
   email,
   password,
-  cpf,
 }: CreateAdvertiserIndividualRequest) {
   const userAlreadyExists = await prisma.user.findUnique({
     where: {
@@ -32,7 +30,6 @@ export async function createAdvertiserIndividual({
       name,
       email,
       password: passwordHash,
-      cpf,
       personType: 'INDIVIDUAL',
       role: 'ADVERTISER',
     },

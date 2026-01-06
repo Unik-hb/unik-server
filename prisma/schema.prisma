@@ -54,8 +54,13 @@ enum TypeOfProperty {
   SHOPS // LOJA
   GARAGE // GARAGEM
   SHED // GALPÃO
-  BUILDING // EDIFÍCIO
+  BUILDING // PRÉDIO
   NO_RESIDENCIAL // NÃO RESIDENCIAL
+}
+
+enum StatusPost {
+  ACTIVE
+  INACTIVE
 }
 
 model User {
@@ -93,10 +98,10 @@ model Property {
   condoFee        Float
   photos          Json?
   builtArea       String
-  bedrooms        String
-  suites          String
-  bathrooms       String?
-  parkingSpots    String
+  bedrooms        Int
+  suites          Int
+  bathrooms       Int?
+  parkingSpots    Int
   updatedRegistry String?
   address         String
   addressNumber   String?
@@ -104,7 +109,7 @@ model Property {
   neighborhood    String
   city            String
   zipCode         String
-  stairFlights    String? // lances de escadas
+  stairFlights    Int? // lances de escadas
   motiveRevision  String? // motivo da revisão
   elevator        Boolean
   airConditioning Boolean
@@ -120,6 +125,7 @@ model Property {
   petArea         Boolean
   partyRoom       Boolean // Salão de festas
   status          ListingStatus   @default(PENDING)
+  statusPost      StatusPost? @default(ACTIVE)
 
   User    User?   @relation(fields: [usersId], references: [id])
   usersId String?
@@ -146,4 +152,20 @@ model Owner {
   createdAt DateTime @default(now())
 
   @@map("owners")
+}
+
+model Sales {
+  id String @id @default(uuid())
+  amount Float
+  date DateTime @default(now())
+
+  @@map("sales")
+}
+
+model Rent {
+  id String @id @default(uuid())
+  amount Float
+  date DateTime @default(now())
+
+  @@map("rents")
 }

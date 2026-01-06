@@ -14,7 +14,6 @@ export const createAdvertiserLegalRoutes: FastifyPluginCallbackZod = app => {
           name: z.string(),
           email: z.email(),
           password: z.string(),
-          cnpj: z.string(),
         }),
 
         response: {
@@ -27,13 +26,12 @@ export const createAdvertiserLegalRoutes: FastifyPluginCallbackZod = app => {
     },
     async (request, reply) => {
       try {
-        const { name, email, password, cnpj } = request.body
+        const { name, email, password } = request.body
 
         await createAdvertiserLegal({
           name,
           email,
-          password,
-          cnpj,
+          password
         })
 
         return reply.status(201).send()

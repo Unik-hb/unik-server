@@ -10,7 +10,7 @@ export async function addWatermark(inputPath: string, outputPath: string) {
     .composite([
       {
         input: watermark,
-        gravity: 'southeast',
+        gravity: 'center',
         blend: 'overlay',
       },
     ])

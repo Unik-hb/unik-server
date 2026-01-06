@@ -34,7 +34,7 @@ app.register(fastifyMultipart, {
   prefix: 'files',
   attachFieldsToBody: true,
   limits: {
-    fileSize: 1 * 1024 * 1024, // 1MB
+    fileSize: 2 * 1024 * 1024, // 2MB
     files: 15,
   },
 })

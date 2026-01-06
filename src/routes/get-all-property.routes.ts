@@ -10,7 +10,7 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
         tags: ['Properties'],
         description: 'Get all properties',
         querystring: z.object({
-          pageIndex: z.coerce.number().min(0).default(0),
+          pageIndex: z.coerce.number().min(0).default(0)
         }),
 
         response: {
@@ -21,7 +21,7 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
               title: z.string(),
               description: z.string().nullable(),
               category: z.enum(['SALE', 'RENT']).nullable(),
-              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'NO_RESIDENCIAL']).nullable(),
+              typeOfProperty: z.enum(['HOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'LOT', 'LAND', 'FARM', 'SHOPS', 'GARAGE', 'BUILDING', 'SHED', 'NO_RESIDENCIAL']).nullable(),
               iptu: z.number().nullable(),
               price: z.number(),
               condoFee: z.number().nullable(),
@@ -30,13 +30,13 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
                 z.array(z.string()).nullable()
               ),
               builtArea: z.string(),
-              bedrooms: z.string(),
-              suites: z.string(),
-              parkingSpots: z.string(),
+              bedrooms: z.number(),
+              suites: z.number(),
+              parkingSpots: z.number(),
               address: z.string(),
               addressNumber: z.string().nullable(),
               uf: z.string().nullable(),
-              bathrooms: z.string().nullable(),
+              bathrooms: z.number().nullable(),
               neighborhood: z.string(),
               city: z.string(),
               zipCode: z.string(),
@@ -53,7 +53,7 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
               petArea: z.boolean(),
               playroom: z.boolean(),
               residential: z.boolean(),
-              stairFlights: z.string().nullable(),
+              stairFlights: z.number().nullable(),
               ownerId: z.string().nullable(),
               usersId: z.string().nullable(),
               createdAt: z.date(),
@@ -74,10 +74,11 @@ export const getAllPropertyRoutes: FastifyPluginCallbackZod = app => {
     async (request, reply) => {
       try {
 
-        const { pageIndex } = request.query
+        const { pageIndex,
+        } = request.query
 
         const { properties, metas } = await getAllProperty({
-          pageIndex
+          pageIndex,
         })
 
         return reply.status(200).send({
