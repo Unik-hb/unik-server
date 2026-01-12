@@ -1,5 +1,4 @@
-import path, { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
 import fastifyCookie from '@fastify/cookie'
 import { fastifyCors } from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
@@ -17,18 +16,15 @@ import {
 import { env } from './env/env.ts'
 import { routes } from './routes/index.ts'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.register(fastifyCors, {
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173', 'https://www.unikhb.com.br'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 })
 
-const uploadsPath = join(__dirname, '..', 'uploads')
+const uploadsPath = join(process.cwd(), 'uploads')
 
 app.register(fastifyMultipart, {
   prefix: 'files',
@@ -77,8 +73,6 @@ if (env.NODE_ENV === 'development') {
     },
   })
 }
-
-
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
