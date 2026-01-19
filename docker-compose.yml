@@ -2,9 +2,7 @@ name: "db_unik"
 
 services:
   pg:
-    image: postgres:17
-    ports:
-      - "5434:5432"
+    image: postgres:17  
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
