@@ -12,3 +12,5 @@ node_modules
 /src/generated/prisma
 
 dist
+
+docker-compose.yml
