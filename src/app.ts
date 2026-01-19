@@ -78,3 +78,8 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 app.register(routes)
+app.get('/test', async () => {
+  return {
+    message: 'It is working! 🚀',
+  }
+})

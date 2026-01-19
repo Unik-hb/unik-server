@@ -7,3 +7,9 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=unikdb
+
+    volumes:
+        - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
