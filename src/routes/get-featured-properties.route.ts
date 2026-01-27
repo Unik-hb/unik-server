@@ -1,0 +1,98 @@
+import type { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
+import z, { ZodError } from "zod";
+import { getFeaturedProperties } from "../functions/get-featured-properties.ts";
+
+export const getFeaturedPropertiesRoutes: FastifyPluginCallbackZod = (app) => {
+  app.get(
+    "/properties/featured",
+    {
+      schema: {
+        tags: ["Properties"],
+        description: "Get featured properties",
+        response: {
+          200: z.object({
+            properties: z.array(
+              z.object({
+                id: z.string(),
+                status: z.enum(["PENDING", "APPROVED", "REJECTED", "REVISION"]),
+                title: z.string(),
+                description: z.string().nullable(),
+                category: z.enum(["SALE", "RENT"]).nullable(),
+                typeOfProperty: z
+                  .enum([
+                    "HOUSE",
+                    "APARTMENT",
+                    "STUDIO",
+                    "LOFT",
+                    "LOT",
+                    "LAND",
+                    "FARM",
+                    "SHOPS",
+                    "GARAGE",
+                    "BUILDING",
+                    "SHED",
+                    "NO_RESIDENCIAL",
+                  ])
+                  .nullable(),
+                iptu: z.number().nullable(),
+                price: z.number(),
+                condoFee: z.number().nullable(),
+                photos: z.preprocess(
+                  (value) =>
+                    typeof value === "string" ? JSON.parse(value) : value,
+                  z.array(z.string()).nullable(),
+                ),
+                builtArea: z.string(),
+                bedrooms: z.number(),
+                suites: z.number(),
+                parkingSpots: z.number(),
+                address: z.string(),
+                addressNumber: z.string().nullable(),
+                uf: z.string().nullable(),
+                bathrooms: z.number().nullable(),
+                neighborhood: z.string(),
+                city: z.string(),
+                zipCode: z.string(),
+                elevator: z.boolean(),
+                airConditioning: z.boolean(),
+                closet: z.boolean(),
+                pool: z.boolean(),
+                sevantsRoom: z.boolean(),
+                terrace: z.boolean(),
+                coworking: z.boolean(),
+                gym: z.boolean(),
+                gourmetArea: z.boolean(),
+                partyRoom: z.boolean(),
+                petArea: z.boolean(),
+                playroom: z.boolean(),
+                residential: z.boolean(),
+                stairFlights: z.number().nullable(),
+                ownerId: z.string().nullable(),
+                usersId: z.string().nullable(),
+                createdAt: z.date(),
+                updatedAt: z.date(),
+                updatedRegistry: z.string().nullable(),
+              }),
+            ),
+          }),
+          400: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+    },
+    async (_, reply) => {
+      try {
+        const { properties } = await getFeaturedProperties();
+
+        return reply.status(200).send({
+          properties,
+        });
+      } catch (error) {
+        if (error instanceof ZodError) {
+          return reply.status(400).send({ message: error.message });
+        }
+      }
+    },
+  );
+};
