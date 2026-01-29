@@ -1,23 +1,36 @@
-import { prisma } from "../database/prisma.ts"
+import { prisma } from "../database/prisma.ts";
 
 interface EditReceivedPropertyRequest {
-  propertyId: string
-  title: string
-  description: string
+  propertyId: string;
+  title: string;
+  description: string;
+  iptu?: number;
+  price?: number;
+  condoFee?: number;
 }
 
-export async function editReceivedPropety({ propertyId, title, description }: EditReceivedPropertyRequest) {
+export async function editReceivedPropety({
+  propertyId,
+  title,
+  description,
+  iptu,
+  price,
+  condoFee,
+}: EditReceivedPropertyRequest) {
   await prisma.property.update({
     where: {
-      id: propertyId
+      id: propertyId,
     },
     data: {
       title,
-      description
-    }
-  })
+      description,
+      price,
+      condoFee,
+      iptu,
+    },
+  });
 
   return {
-    message: 'Editado com sucesso'
-  }
+    message: "Editado com sucesso",
+  };
 }
