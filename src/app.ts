@@ -1,85 +1,85 @@
-import { join } from 'node:path'
-import fastifyCookie from '@fastify/cookie'
-import { fastifyCors } from '@fastify/cors'
-import fastifyJwt from '@fastify/jwt'
-import fastifyMultipart from '@fastify/multipart'
-import fastifyStatic from '@fastify/static'
-import fastifySwagger from '@fastify/swagger'
-import scalarAPIReference from '@scalar/fastify-api-reference'
-import fastify from 'fastify'
+import { join } from "node:path";
+import fastifyCookie from "@fastify/cookie";
+import { fastifyCors } from "@fastify/cors";
+import fastifyJwt from "@fastify/jwt";
+import fastifyMultipart from "@fastify/multipart";
+import fastifyStatic from "@fastify/static";
+import fastifySwagger from "@fastify/swagger";
+import scalarAPIReference from "@scalar/fastify-api-reference";
+import fastify from "fastify";
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
-} from 'fastify-type-provider-zod'
-import { env } from './env/env.ts'
-import { routes } from './routes/index.ts'
+} from "fastify-type-provider-zod";
+import { env } from "./env/env.ts";
+import { routes } from "./routes/index.ts";
 
-export const app = fastify().withTypeProvider<ZodTypeProvider>()
+export const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.register(fastifyCors, {
-  origin: ['http://localhost:5173', 'https://www.unikhb.com.br'],
+  origin: ["http://localhost:5173", "https://www.unikhb.com.br"],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-})
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+});
 
-const uploadsPath = join(process.cwd(), 'uploads')
+const uploadsPath = join(process.cwd(), "uploads");
 
 app.register(fastifyMultipart, {
-  prefix: 'files',
+  prefix: "files",
   attachFieldsToBody: true,
   limits: {
     fileSize: 2 * 1024 * 1024, // 2MB
-    files: 15,
+    files: 20,
   },
-})
+});
 
 app.register(fastifyStatic, {
   root: uploadsPath,
-  prefix: '/files/',
+  prefix: "/files/",
   decorateReply: true,
-})
+});
 
 app.register(fastifyJwt, {
   secret: env.PRIVATE_KEY_JWT,
   sign: {
-    expiresIn: '7d',
+    expiresIn: "7d",
   },
   cookie: {
-    cookieName: 'token',
+    cookieName: "token",
     signed: false,
   },
-})
+});
 
-app.register(fastifyCookie)
+app.register(fastifyCookie);
 
-if (env.NODE_ENV === 'development') {
+if (env.NODE_ENV === "development") {
   app.register(fastifySwagger, {
     openapi: {
       info: {
-        title: 'Unik API',
-        version: '1.0.0',
+        title: "Unik API",
+        version: "1.0.0",
       },
     },
 
     transform: jsonSchemaTransform,
-  })
+  });
 
   app.register(scalarAPIReference, {
-    routePrefix: '/docs',
+    routePrefix: "/docs",
     configuration: {
-      theme: 'elysiajs',
+      theme: "elysiajs",
     },
-  })
+  });
 }
 
-app.setValidatorCompiler(validatorCompiler)
-app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
-app.register(routes)
-app.get('/test', async () => {
+app.register(routes);
+app.get("/test", async () => {
   return {
-    message: 'It is working! 🚀',
-  }
-})
+    message: "It is working! 🚀",
+  };
+});
